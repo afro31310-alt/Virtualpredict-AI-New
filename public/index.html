@@ -1,135 +1,360 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VirtualPredict AI — Plans</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0; padding: 20px;
-      font-family: Arial, sans-serif;
-      background: #0b1220; color: #fff;
-    }
-    .container { max-width: 650px; margin: auto; }
-    h1 { text-align: center; color: #63b3ff; }
-    .intro { text-align: center; color: #cbd5e1; }
-    .plan {
-      background: #172238; border: 1px solid #30415e;
-      border-radius: 12px; padding: 18px; margin: 15px 0;
-    }
-    .plan h2 { margin-top: 0; }
-    .price { font-size: 25px; color: #70e1a1; font-weight: bold; }
-    button, .whatsapp {
-      display: block; width: 100%; border: 0; border-radius: 9px;
-      padding: 14px; font-size: 16px; font-weight: bold;
-      cursor: pointer; text-align: center; text-decoration: none;
-    }
-    button { background: #2878e8; color: white; }
-    .whatsapp { background: #20c66b; color: #062b16; margin-top: 12px; }
-    input, select {
-      width: 100%; padding: 12px; margin: 8px 0 14px;
-      border-radius: 7px; border: 1px solid #52617a;
-      background: #0b1220; color: white; font-size: 16px;
-    }
-    label { display: block; margin-top: 12px; }
-    .instructions {
-      background: #111b2e; padding: 15px; border-radius: 10px;
-      line-height: 1.6; margin-top: 20px;
-    }
-    .small { font-size: 13px; color: #cbd5e1; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="VirtualPredict AI analysis packages and account access">
+<title>VirtualPredict AI</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;padding:20px;font-family:Arial,sans-serif;
+ background:#0b1220;color:#fff
+}
+.container{max-width:650px;margin:auto}
+h1{text-align:center;color:#63b3ff}
+.intro{text-align:center;color:#cbd5e1;line-height:1.6}
+.card,.plan,.instructions{
+ background:#172238;border:1px solid #334155;
+ border-radius:12px;padding:18px;margin:16px 0
+}
+h2{margin-top:0}
+.price{font-size:25px;color:#70e1a1;font-weight:bold}
+button{
+ display:block;width:100%;border:0;border-radius:8px;
+ padding:14px;margin-top:10px;font-size:16px;
+ font-weight:bold;cursor:pointer;background:#2878e8;color:white
+}
+button:disabled{opacity:.6}
+.whatsapp{background:#20c66b;color:#07130b}
+input,select{
+ display:block;width:100%;padding:12px;margin:8px 0 14px;
+ border:1px solid #475569;border-radius:7px;
+ background:#0b1220;color:white;font-size:16px
+}
+label{display:block;margin-top:12px}
+.small{font-size:13px;color:#cbd5e1;line-height:1.6}
+.status{padding:10px;border-radius:7px;background:#0b1220;line-height:1.5}
+.hidden{display:none}
+hr{border:0;border-top:1px solid #334155;margin:22px 0}
+</style>
 </head>
+
 <body>
 <div class="container">
-  <h1>VirtualPredict AI</h1>
-  <p class="intro">Choose your analysis package and submit your payment proof on WhatsApp.</p>
+<h1>VirtualPredict AI</h1>
+<p class="intro">Create your account, choose an analysis package, and submit your payment for manual verification.</p>
 
-  <div class="plan">
-    <h2>Regular</h2>
-    <p class="price">GH₵200</p>
-    <p>7 analyses</p>
-    <button onclick="choosePlan('Regular', 200, 7)">Choose Regular</button>
-  </div>
+<!-- ACCOUNT SECTION -->
+<div class="card" id="authCard">
+<h2>Customer Account</h2>
+<p class="small">Create an account or log in to continue.</p>
 
-  <div class="plan">
-    <h2>Premium</h2>
-    <p class="price">GH₵450</p>
-    <p>24 analyses</p>
-    <button onclick="choosePlan('Premium', 450, 24)">Choose Premium</button>
-  </div>
+<label for="fullName">Full name (for new accounts)</label>
+<input id="fullName" type="text" placeholder="Enter your full name" autocomplete="name">
 
-  <div class="plan">
-    <h2>VIP</h2>
-    <p class="price">GH₵1000</p>
-    <p>60 analyses</p>
-    <button onclick="choosePlan('VIP', 1000, 60)">Choose VIP</button>
-  </div>
+<label for="email">Email address</label>
+<input id="email" type="email" placeholder="you@example.com" autocomplete="email">
 
-  <div class="instructions">
-    <h3>Mobile Money Payment</h3>
-    <p><b>Number:</b> 0204104118</p>
-    <p><b>Account name:</b> Micheal Kofi Annan Cudjoe</p>
-    <p>Pay the amount for your selected package, then complete the form below and send your proof through WhatsApp.</p>
-  </div>
+<label for="password">Password</label>
+<input id="password" type="password" placeholder="At least 6 characters" autocomplete="current-password">
 
-  <form id="paymentForm">
-    <label for="package">Selected package</label>
-    <select id="package" required>
-      <option value="">Choose a package</option>
-      <option value="Regular|200|7">Regular — GH₵200 (7 analyses)</option>
-      <option value="Premium|450|24">Premium — GH₵450 (24 analyses)</option>
-      <option value="VIP|1000|60">VIP — GH₵1000 (60 analyses)</option>
-    </select>
+<button id="signupBtn" type="button">Create Account</button>
+<button id="loginBtn" type="button">Log In</button>
+<p id="authMessage" class="status" aria-live="polite">Not logged in.</p>
+</div>
 
-    <label for="customer">Your name</label>
-    <input id="customer" type="text" placeholder="Enter your name" required>
+<div class="card hidden" id="accountCard">
+<h2>Your Account</h2>
+<p id="accountEmail"></p>
+<p class="small">Your account is signed in. Paid access requires payment verification.</p>
+<button id="logoutBtn" type="button">Log Out</button>
+</div>
 
-    <label for="transaction">Mobile Money transaction ID</label>
-    <input id="transaction" type="text" placeholder="Enter transaction ID" required>
+<!-- PACKAGES -->
+<section id="packages">
+<h2>Choose Your Package</h2>
 
-    <button type="submit">Send payment proof on WhatsApp</button>
-  </form>
+<div class="plan">
+<h2>Regular</h2>
+<p class="price">GH₵200</p>
+<p>7 analyses</p>
+<button type="button" onclick="choosePlan('Regular',200,7)">Choose Regular</button>
+</div>
 
-  <p class="small">
-    Your package is not activated automatically. The owner must confirm your payment first.
-    Send your payment screenshot in the WhatsApp chat after it opens.
-  </p>
+<div class="plan">
+<h2>Premium</h2>
+<p class="price">GH₵450</p>
+<p>24 analyses</p>
+<button type="button" onclick="choosePlan('Premium',450,24)">Choose Premium</button>
+</div>
+
+<div class="plan">
+<h2>VIP</h2>
+<p class="price">GH₵1000</p>
+<p>60 analyses</p>
+<button type="button" onclick="choosePlan('VIP',1000,60)">Choose VIP</button>
+</div>
+</section>
+
+<!-- PAYMENT INSTRUCTIONS -->
+<div class="instructions">
+<h2>Mobile Money Payment</h2>
+<p><b>Number:</b> 0204104118</p>
+<p><b>Account name:</b> Micheal Kofi Annan Cudjoe</p>
+<p>Pay the amount for your selected package. Then enter your details below and send your payment proof through WhatsApp.</p>
+</div>
+
+<form id="paymentForm" class="card">
+<h2>Payment Details</h2>
+
+<label for="package">Selected package</label>
+<select id="package" required>
+<option value="">Choose a package</option>
+<option value="Regular|200|7">Regular — GH₵200 (7 analyses)</option>
+<option value="Premium|450|24">Premium — GH₵450 (24 analyses)</option>
+<option value="VIP|1000|60">VIP — GH₵1000 (60 analyses)</option>
+</select>
+
+<label for="customer">Your name</label>
+<input id="customer" type="text" placeholder="Your full name" required>
+
+<label for="transaction">Mobile Money transaction ID</label>
+<input id="transaction" type="text" placeholder="Enter transaction ID" required>
+
+<button type="submit">Send Payment Proof on WhatsApp</button>
+
+<p class="small">
+Your package is not activated automatically. The administrator must verify your payment before granting access. Do not send your Mobile Money PIN or password.
+</p>
+</form>
+
+<div class="card">
+<h2>AI Predictor</h2>
+<p class="small">After your payment is verified and your access is activated, you can use the AI predictor. The login page alone does not confirm payment or grant analyses.</p>
+<button type="button" onclick="openPredictor()">Open AI Predictor</button>
+</div>
+
+<p class="small" style="text-align:center">VirtualPredict AI · Predictions are estimates and are not guaranteed outcomes.</p>
 </div>
 
 <script>
-  function choosePlan(name, amount, credits) {
-    document.getElementById("package").value =
-      name + "|" + amount + "|" + credits;
-    document.getElementById("paymentForm").scrollIntoView({ behavior: "smooth" });
+/* Replace these two values with your own Supabase project details. */
+const SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL";
+const SUPABASE_PUBLISHABLE_KEY = "YOUR_SUPABASE_PUBLISHABLE_KEY";
+
+let supabaseClient = null;
+
+const authMessage = document.getElementById("authMessage");
+const authCard = document.getElementById("authCard");
+const accountCard = document.getElementById("accountCard");
+
+function showAuthMessage(message){
+  authMessage.textContent = message;
+}
+
+function setupSupabase(){
+  if(
+    SUPABASE_URL.startsWith("https://") &&
+    !SUPABASE_URL.includes(https://rwzqldxeqivletkgqinq.supabase.co) &&
+    SUPABASE_PUBLISHABLE_KEY &&
+    !SUPABASE_PUBLISHABLE_KEY.includes(sb_publishable_6-WQU7TP2mmVPUuP_Jlp3w_7N5sc8G1)
+  ){
+    supabaseClient = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY
+    );
+    return true;
   }
 
-  document.getElementById("paymentForm").addEventListener("submit", function(e) {
-    e.preventDefault();
+  showAuthMessage("Add your Supabase Project URL and Publishable key in the code before using accounts.");
+  return false;
+}
 
-    const selected = document.getElementById("package").value;
-    if (!selected) {
-      alert("Please choose a package.");
-      return;
-    }
+function getCredentials(){
+  return {
+    email:document.getElementById("email").value.trim(),
+    password:document.getElementById("password").value,
+    name:document.getElementById("fullName").value.trim()
+  };
+}
 
-    const [plan, amount, credits] = selected.split("|");
-    const customer = document.getElementById("customer").value.trim();
-    const transaction = document.getElementById("transaction").value.trim();
+document.getElementById("signupBtn").addEventListener("click",async()=>{
+  if(!setupSupabase())return;
 
-    const message =
-      "Hello, I have made payment for VirtualPredict AI.%0A" +
-      "Package: " + encodeURIComponent(plan) + "%0A" +
-      "Amount: GH₵" + encodeURIComponent(amount) + "%0A" +
-      "Analyses: " + encodeURIComponent(credits) + "%0A" +
-      "Name: " + encodeURIComponent(customer) + "%0A" +
-      "Transaction ID: " + encodeURIComponent(transaction) + "%0A" +
-      "I will send my payment screenshot here.";
+  const {email,password,name}=getCredentials();
 
-    const whatsappNumber = "233204104118";
-    window.open("https://wa.me/" + whatsappNumber + "?text=" + message, "_blank");
+  if(!name || !email || password.length<6){
+    showAuthMessage("Enter your full name, a valid email, and a password of at least 6 characters.");
+    return;
+  }
+
+  showAuthMessage("Creating your account...");
+
+  const {data,error}=await supabaseClient.auth.signUp({
+    email,
+    password,
+    options:{data:{full_name:name}}
   });
+
+  if(error){
+    showAuthMessage(error.message);
+    return;
+  }
+
+  if(data.session){
+    showAuthMessage("Account created successfully.");
+    updateAccount(data.session.user);
+  }else{
+    showAuthMessage("Account created. Check your email to confirm your account, then log in.");
+  }
+});
+
+document.getElementById("loginBtn").addEventListener("click",async()=>{
+  if(!setupSupabase())return;
+
+  const {email,password}=getCredentials();
+
+  if(!email || !password){
+    showAuthMessage("Enter your email and password.");
+    return;
+  }
+
+  showAuthMessage("Logging in...");
+
+  const {data,error}=await supabaseClient.auth.signInWithPassword({
+    email,password
+  });
+
+  if(error){
+    showAuthMessage(error.message);
+    return;
+  }
+
+  showAuthMessage("You are logged in.");
+  updateAccount(data.user);
+});
+
+function updateAccount(user){
+  if(!user)return;
+
+  authCard.classList.add("hidden");
+  accountCard.classList.remove("hidden");
+  document.getElementById("accountEmail").textContent=
+    "Logged in as: "+user.email;
+
+  const name=user.user_metadata?.full_name;
+  if(name && !document.getElementById("customer").value){
+    document.getElementById("customer").value=name;
+  }
+}
+
+document.getElementById("logoutBtn").addEventListener("click",async()=>{
+  if(!supabaseClient)return;
+
+  const {error}=await supabaseClient.auth.signOut();
+
+  if(error){
+    alert(error.message);
+    return;
+  }
+
+  accountCard.classList.add("hidden");
+  authCard.classList.remove("hidden");
+  showAuthMessage("You have logged out.");
+});
+
+async function restoreSession(){
+  if(!setupSupabase())return;
+
+  const {data,error}=await supabaseClient.auth.getSession();
+
+  if(error){
+    showAuthMessage(error.message);
+    return;
+  }
+
+  if(data.session){
+    updateAccount(data.session.user);
+    showAuthMessage("You are logged in.");
+  }
+
+  supabaseClient.auth.onAuthStateChange((_event,session)=>{
+    if(session){
+      updateAccount(session.user);
+    }else{
+      accountCard.classList.add("hidden");
+      authCard.classList.remove("hidden");
+    }
+  });
+}
+
+let selectedPlan=null;
+
+function choosePlan(name,amount,credits){
+  selectedPlan={name,amount,credits};
+  document.getElementById("package").value=
+    name+"|"+amount+"|"+credits;
+
+  document.getElementById("paymentForm").scrollIntoView({
+    behavior:"smooth",
+    block:"start"
+  });
+}
+
+document.getElementById("paymentForm").addEventListener("submit",async(event)=>{
+  event.preventDefault();
+
+  const packageValue=document.getElementById("package").value;
+
+  if(!packageValue){
+    alert("Please choose a package.");
+    return;
+  }
+
+  if(!supabaseClient && !setupSupabase())return;
+
+  const {data:{session}}=await supabaseClient.auth.getSession();
+
+  if(!session){
+    alert("Please create an account or log in before submitting payment details.");
+    document.getElementById("authCard").scrollIntoView({behavior:"smooth"});
+    return;
+  }
+
+  const [plan,amount,credits]=packageValue.split("|");
+  const customer=document.getElementById("customer").value.trim();
+  const transaction=document.getElementById("transaction").value.trim();
+
+  if(!customer || !transaction){
+    alert("Enter your name and transaction ID.");
+    return;
+  }
+
+  const message=
+    "Hello, I have made payment for VirtualPredict AI.%0A"+
+    "Package: "+encodeURIComponent(plan)+"%0A"+
+    "Amount: GH₵"+encodeURIComponent(amount)+"%0A"+
+    "Analyses: "+encodeURIComponent(credits)+"%0A"+
+    "Name: "+encodeURIComponent(customer)+"%0A"+
+    "Email: "+encodeURIComponent(session.user.email)+"%0A"+
+    "Transaction ID: "+encodeURIComponent(transaction)+"%0A"+
+    "I will send my payment screenshot here for verification.";
+
+  window.open(
+    "https://wa.me/233204104118?text="+message,
+    "_blank"
+  );
+});
+
+function openPredictor(){
+  alert("Your existing AI predictor must be connected to this button. Paid access also needs secure payment verification and analysis tracking before customers can use it.");
+}
+
+restoreSession();
 </script>
 </body>
 </html>
