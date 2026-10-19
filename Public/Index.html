@@ -1,144 +1,135 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>VirtualPredict AI</title>
-<style>
-*{box-sizing:border-box}
-body{margin:0;background:#100000;color:#fff;font-family:Arial,sans-serif}
-main{max-width:700px;margin:auto;padding:25px 16px}
-h1{text-align:center;color:#ff2424;font-size:34px}
-.sub{text-align:center;color:#ccc;margin-bottom:25px}
-.panel,.plan,.payment{background:#1b0000;border:1px solid #8e0000;border-radius:18px;padding:18px;margin:15px 0}
-h2{color:#ff4444}
-.price{font-size:28px;font-weight:bold}
-button{border:0;border-radius:12px;padding:14px;background:#e00000;color:white;font-size:17px;font-weight:bold;width:100%;cursor:pointer}
-button:disabled{background:#555}
-input{width:100%;padding:13px;margin:8px 0;background:#080808;color:white;border:1px solid #770000;border-radius:10px}
-small,.muted{color:#bbb;line-height:1.5}
-.hidden{display:none}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VirtualPredict AI — Plans</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 20px;
+      font-family: Arial, sans-serif;
+      background: #0b1220; color: #fff;
+    }
+    .container { max-width: 650px; margin: auto; }
+    h1 { text-align: center; color: #63b3ff; }
+    .intro { text-align: center; color: #cbd5e1; }
+    .plan {
+      background: #172238; border: 1px solid #30415e;
+      border-radius: 12px; padding: 18px; margin: 15px 0;
+    }
+    .plan h2 { margin-top: 0; }
+    .price { font-size: 25px; color: #70e1a1; font-weight: bold; }
+    button, .whatsapp {
+      display: block; width: 100%; border: 0; border-radius: 9px;
+      padding: 14px; font-size: 16px; font-weight: bold;
+      cursor: pointer; text-align: center; text-decoration: none;
+    }
+    button { background: #2878e8; color: white; }
+    .whatsapp { background: #20c66b; color: #062b16; margin-top: 12px; }
+    input, select {
+      width: 100%; padding: 12px; margin: 8px 0 14px;
+      border-radius: 7px; border: 1px solid #52617a;
+      background: #0b1220; color: white; font-size: 16px;
+    }
+    label { display: block; margin-top: 12px; }
+    .instructions {
+      background: #111b2e; padding: 15px; border-radius: 10px;
+      line-height: 1.6; margin-top: 20px;
+    }
+    .small { font-size: 13px; color: #cbd5e1; }
+  </style>
 </head>
 <body>
-<main>
-<h1>⚡ VirtualPredict AI</h1>
-<div class="sub">Virtual game analysis subscriptions</div>
+<div class="container">
+  <h1>VirtualPredict AI</h1>
+  <p class="intro">Choose your analysis package and submit your payment proof on WhatsApp.</p>
 
-<section id="plans">
-<div class="plan">
-<h2>Regular</h2>
-<div class="price">GH₵200</div>
-<p>7 analyses · Use whenever you want</p>
-<button onclick="choosePlan('regular')">Choose Regular</button>
+  <div class="plan">
+    <h2>Regular</h2>
+    <p class="price">GH₵200</p>
+    <p>7 analyses</p>
+    <button onclick="choosePlan('Regular', 200, 7)">Choose Regular</button>
+  </div>
+
+  <div class="plan">
+    <h2>Premium</h2>
+    <p class="price">GH₵450</p>
+    <p>24 analyses</p>
+    <button onclick="choosePlan('Premium', 450, 24)">Choose Premium</button>
+  </div>
+
+  <div class="plan">
+    <h2>VIP</h2>
+    <p class="price">GH₵1000</p>
+    <p>60 analyses</p>
+    <button onclick="choosePlan('VIP', 1000, 60)">Choose VIP</button>
+  </div>
+
+  <div class="instructions">
+    <h3>Mobile Money Payment</h3>
+    <p><b>Number:</b> 0204104118</p>
+    <p><b>Account name:</b> Micheal Kofi Annan Cudjoe</p>
+    <p>Pay the amount for your selected package, then complete the form below and send your proof through WhatsApp.</p>
+  </div>
+
+  <form id="paymentForm">
+    <label for="package">Selected package</label>
+    <select id="package" required>
+      <option value="">Choose a package</option>
+      <option value="Regular|200|7">Regular — GH₵200 (7 analyses)</option>
+      <option value="Premium|450|24">Premium — GH₵450 (24 analyses)</option>
+      <option value="VIP|1000|60">VIP — GH₵1000 (60 analyses)</option>
+    </select>
+
+    <label for="customer">Your name</label>
+    <input id="customer" type="text" placeholder="Enter your name" required>
+
+    <label for="transaction">Mobile Money transaction ID</label>
+    <input id="transaction" type="text" placeholder="Enter transaction ID" required>
+
+    <button type="submit">Send payment proof on WhatsApp</button>
+  </form>
+
+  <p class="small">
+    Your package is not activated automatically. The owner must confirm your payment first.
+    Send your payment screenshot in the WhatsApp chat after it opens.
+  </p>
 </div>
-
-<div class="plan">
-<h2>Premium</h2>
-<div class="price">GH₵450</div>
-<p>24 analyses · Use whenever you want</p>
-<button onclick="choosePlan('premium')">Choose Premium</button>
-</div>
-
-<div class="plan">
-<h2>VIP</h2>
-<div class="price">GH₵1,000</div>
-<p>60 analyses · Use whenever you want</p>
-<button onclick="choosePlan('vip')">Choose VIP</button>
-</div>
-</section>
-
-<section id="payment" class="panel hidden">
-<h2 id="chosen"></h2>
-<p>Send the exact plan price using Mobile Money:</p>
-<p><b>Number:</b> 020 410 4118</p>
-<p><b>Name:</b> Micheal Kofi Annan Cudjoe</p>
-<p class="muted">After paying, enter your email and transaction ID, or attach your payment screenshot. Your credits activate only after manual payment approval.</p>
-
-<form id="proofForm">
-<label>Your email</label>
-<input name="customerEmail" type="email" required placeholder="you@example.com">
-
-<label>Mobile Money transaction ID</label>
-<input name="transactionId" placeholder="Enter transaction ID">
-
-<label>Payment screenshot (optional if transaction ID is entered)</label>
-<input name="screenshot" type="file" accept="image/*">
-
-<button type="submit">Verify Payment</button>
-</form>
-<p id="message"></p>
-<button onclick="backToPlans()">Back to plans</button>
-</section>
-
-<p class="muted">Predictions are estimates, not guaranteed results. Payment proof is reviewed manually.</p>
-</main>
 
 <script>
-let currentPlan = "";
-
-const planInfo = {
-  regular: {name:"Regular", price:200, credits:7},
-  premium: {name:"Premium", price:450, credits:24},
-  vip: {name:"VIP", price:1000, credits:60}
-};
-
-function choosePlan(plan){
-  currentPlan = plan;
-  const p = planInfo[plan];
-  document.getElementById("chosen").textContent =
-    p.name + " — GH₵" + p.price + " (" + p.credits + " analyses)";
-  document.getElementById("plans").classList.add("hidden");
-  document.getElementById("payment").classList.remove("hidden");
-  document.getElementById("message").textContent = "";
-}
-
-function backToPlans(){
-  document.getElementById("payment").classList.add("hidden");
-  document.getElementById("plans").classList.remove("hidden");
-}
-
-document.getElementById("proofForm").addEventListener("submit", async function(e){
-  e.preventDefault();
-
-  if(!currentPlan) return;
-
-  const form = e.target;
-  const transactionId = form.transactionId.value.trim();
-  const screenshot = form.screenshot.files[0];
-
-  if(!transactionId && !screenshot){
-    document.getElementById("message").textContent =
-      "Please enter a transaction ID or attach a screenshot.";
-    return;
+  function choosePlan(name, amount, credits) {
+    document.getElementById("package").value =
+      name + "|" + amount + "|" + credits;
+    document.getElementById("paymentForm").scrollIntoView({ behavior: "smooth" });
   }
 
-  const data = new FormData(form);
-  data.append("plan", currentPlan);
+  document.getElementById("paymentForm").addEventListener("submit", function(e) {
+    e.preventDefault();
 
-  const button = form.querySelector("button");
-  button.disabled = true;
-  button.textContent = "Sending proof...";
+    const selected = document.getElementById("package").value;
+    if (!selected) {
+      alert("Please choose a package.");
+      return;
+    }
 
-  try{
-    const response = await fetch("/api/payment-proof",{
-      method:"POST",
-      body:data
-    });
+    const [plan, amount, credits] = selected.split("|");
+    const customer = document.getElementById("customer").value.trim();
+    const transaction = document.getElementById("transaction").value.trim();
 
-    const result = await response.json();
+    const message =
+      "Hello, I have made payment for VirtualPredict AI.%0A" +
+      "Package: " + encodeURIComponent(plan) + "%0A" +
+      "Amount: GH₵" + encodeURIComponent(amount) + "%0A" +
+      "Analyses: " + encodeURIComponent(credits) + "%0A" +
+      "Name: " + encodeURIComponent(customer) + "%0A" +
+      "Transaction ID: " + encodeURIComponent(transaction) + "%0A" +
+      "I will send my payment screenshot here.";
 
-    document.getElementById("message").textContent =
-      result.message || result.error || "Request finished.";
-
-  }catch(err){
-    document.getElementById("message").textContent =
-      "Could not send proof. Please try again.";
-  }
-
-  button.disabled = false;
-  button.textContent = "Verify Payment";
-});
+    const whatsappNumber = "233204104118";
+    window.open("https://wa.me/" + whatsappNumber + "?text=" + message, "_blank");
+  });
 </script>
 </body>
-  </html>
+</html>
