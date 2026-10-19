@@ -202,7 +202,8 @@ function updateUser(user){
   }
 }
 
-document.getElementById("signupBtn").addEventListener("click",async()=>{
+document.getElementById("signupBtn").addEventListener("click", async()=>{
+  authMessage.textContent = "Button clicked — checking Supabase...";
   if(!initSupabase()) return;
 
   const name = document.getElementById("fullName").value.trim();
